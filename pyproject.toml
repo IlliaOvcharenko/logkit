@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "logkit"
+version = "0.1.0"
+description = "Small reusable logging helpers."
+readme = "README.md"
+requires-python = ">=3.10"
+dependencies = []
+authors = [
+    { name = "Illia Ovcharenko" }
+]
+
+[project.optional-dependencies]
+git = ["pygit2>=1.12"]
+pandas = ["pandas>=2.0"]
+web = ["requests"]
+
+[tool.setuptools]
+package-dir = {"" = "src"}
+
+[tool.setuptools.packages.find]
+where = ["src"]
