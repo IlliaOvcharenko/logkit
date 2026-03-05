@@ -1,0 +1,18 @@
+2026-03-05 02:13:21 :: my_app :: INFO :: Run: examples/demo.py
+2026-03-05 02:13:21 :: my_app :: INFO :: Current branch is: main
+commit: 660c911bcecf7aa58bfeb7cc9abc463bde5e2768
+2026-03-05 02:13:21 :: my_app :: INFO :: Params:
+2026-03-05 02:13:21 :: my_app :: INFO ::   param1: test1
+2026-03-05 02:13:21 :: my_app :: INFO ::   param2: test2
+2026-03-05 02:13:21 :: my_app :: INFO :: Test default
+2026-03-05 02:13:21 :: my_app :: INFO ::    nums str 
+2026-03-05 02:13:21 :: my_app :: INFO :: 0: 0    ttt 
+2026-03-05 02:13:21 :: my_app :: INFO :: 1: 1    ttt 
+2026-03-05 02:13:21 :: my_app :: INFO :: 2: 2    ttt 
+2026-03-05 02:13:21 :: my_app :: INFO :: 3: 3    ttt 
+2026-03-05 02:13:21 :: my_app :: INFO :: 4: 4    ttt 
+2026-03-05 02:13:21 :: my_app.subfolder :: INFO :: number 0
+2026-03-05 02:13:21 :: my_app.subfolder :: INFO :: number 1
+2026-03-05 02:13:21 :: my_app.subfolder :: INFO :: number 2
+2026-03-05 02:13:21 :: my_app :: WARNING :: Caught ZeroDivisionError at /Users/iovcharenko/notwork/logkit_custom_python_logger/logkit_codex/examples/demo.py:39 - division by zero
+2026-03-05 02:13:21 :: my_app :: INFO :: after zero div

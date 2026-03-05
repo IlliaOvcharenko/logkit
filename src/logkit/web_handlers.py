@@ -17,6 +17,11 @@ from .handlers import Defaults
 
 
 class TelegramHandler(logging.Handler):
+    """Logging handler that sends records to Telegram chats.
+
+    Chat IDs are resolved from bot update history for provided usernames.
+    """
+
     def __init__(
         self,
         token: str,
@@ -25,6 +30,18 @@ class TelegramHandler(logging.Handler):
         notify_levels: list[str] = ["INFO", "ERROR", "CRITICAL", "WARNING"],
         only_level: str | None = None,
     ) -> None:
+        """Initialize Telegram handler configuration.
+
+        Args:
+            token: Telegram bot token.
+            username: One username or a list of usernames to notify.
+            prefix: Optional message prefix.
+            notify_levels: Levels that should trigger active notifications.
+            only_level: If set, send only records with this exact level name.
+
+        Examples:
+            >>> handler = TelegramHandler("BOT_TOKEN", ["username"])
+        """
         super().__init__()
         self.setLevel(Defaults().level)
         self.token = token

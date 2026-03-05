@@ -22,6 +22,23 @@ def get_logger(
     level: str = "DEBUG",
     propagate: bool = True,
 ) -> logging.LoggerAdapter:
+    """Create a LoggerAdapter with a hierarchical logger name.
+
+    Args:
+        base_name: Base logger namespace (application name).
+        module_name: Module identifier, typically ``__name__``.
+        level: Logging level name (for example, ``"DEBUG"``).
+        propagate: Whether messages should propagate to parent loggers.
+            If not, handler attached to a main logger (like one in
+            enter-point script) will not see any massages from an src
+            folder loggers.
+
+    Returns:
+        logging.LoggerAdapter: Configured logger adapter.
+
+    Examples:
+        >>> logger = get_logger("my_app", __name__)
+    """
     if module_name == "__main__":
         name = base_name
     else:
@@ -43,6 +60,23 @@ def add_handlers(
     application: str,
     handlers: list,
 ) -> logging.LoggerAdapter:
+    """Attach handlers and add application name to logger extra fields.
+
+    The function stores ``app_name`` (derived from the ``application`` path)
+    into ``logger.extra`` so handlers such as ``TelegramHandler`` can enrich
+    outgoing messages.
+
+    Args:
+        logger: Target logger adapter.
+        application: Application file path, usually ``__file__``.
+        handlers: List of initialized logging handlers to attach.
+
+    Returns:
+        logging.LoggerAdapter: Same adapter with handlers attached.
+
+    Examples:
+        >>> add_handlers(logger, __file__, [DefaultConsoleHandler()])
+    """
 
     application_path: Path = absolute_to_rel(application)
     logger.extra = {"app_name": application_path.name}
@@ -58,6 +92,20 @@ def catch_all_exceptions(
     *,
     reraise: bool = False,
 ) -> Callable:
+    """Create a decorator that logs and optionally re-raises exceptions.
+
+    Args:
+        logger: Logger used to report caught exceptions.
+        reraise: If ``True``, re-raise the original exception after logging.
+
+    Returns:
+        Callable: Decorator wrapping a function with exception handling.
+
+    Examples:
+        >>> @catch_all_exceptions(logger, reraise=False)
+        ... def main():
+        ...     ...
+    """
     def decorator(func: Callable) -> Callable:
         @wraps(func)
         def wrapper(*args, **kwargs) -> Any:
@@ -139,6 +187,19 @@ def log_run(
     fn: str,
     params: Mapping[str, Any],
 ) -> None:
+    """Log current enter-point information. Done only ones, even if repeated.
+
+    Logs filename, git metadata (if available), and parameter values exactly
+    once per Python process.
+
+    Args:
+        logger: Logger used for output.
+        fn: Current file path (usually ``__file__``).
+        params: Mapping of run parameters (for example, ``locals()``).
+
+    Examples:
+        >>> log_run(logger, __file__, locals())
+    """
     global log_run_done
 
     if not log_run_done:
@@ -157,6 +218,25 @@ def log_df(
     level: str = "INFO",
     col_size: int | None = None,
 ) -> None:
+    """Log a pandas DataFrame in okay format.
+
+    If pandas is not installed, the function logs a debug message and returns
+    without raising.
+
+    Args:
+        logger: Logger used for output.
+        df: pandas DataFrame object to print.
+        title: Optional title line shown above the table.
+        v2s: Optional value-to-string converter for cell values.
+        level: Logging level name used for DataFrame rows.
+        col_size: Optional minimum width for each column.
+
+    Raises:
+        TypeError: If ``df`` is not a pandas DataFrame.
+
+    Examples:
+        >>> log_df(logger, df, v2s=lambda v: str(v))
+    """
     try:
         import pandas as pd
     except Exception:
