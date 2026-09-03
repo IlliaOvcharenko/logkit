@@ -7,7 +7,8 @@ from dataclasses import dataclass
 @dataclass(frozen=True)
 class Defaults:
     level: int = logging.DEBUG
-    fmt: str = "%(asctime)s :: %(name)s :: %(levelname)s :: %(message)s"
+    fmt: str = "%(asctime)s :: %(levelname)s :: %(message)s"
+    # fmt: str = "%(asctime)s :: %(name)s :: %(levelname)s :: %(message)s"
     datefmt: str = "%Y-%m-%d %H:%M:%S"
 
     def get_formatter(self) -> logging.Formatter:

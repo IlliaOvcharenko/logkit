@@ -51,8 +51,11 @@ def get_logger(
     return logger_adapter
 
 
-def absolute_to_rel(fn: Path | str) -> Path:
-    return Path(fn).relative_to(Path.cwd())
+def absolute_to_rel(fn: Path | str) -> Path | str:
+    if Path(fn).is_relative_to(Path.cwd()):
+        return Path(fn).relative_to(Path.cwd())
+    else:
+        return fn
 
 
 def add_handlers(
@@ -78,8 +81,10 @@ def add_handlers(
         >>> add_handlers(logger, __file__, [DefaultConsoleHandler()])
     """
 
-    application_path: Path = absolute_to_rel(application)
-    logger.extra = {"app_name": application_path.name}
+    app_path = absolute_to_rel(application)
+    logger.extra = {
+        "app_name": app_path.stem if isinstance(app_path, Path) else app_path
+    }
 
     for h in handlers:
         logger.logger.addHandler(h)
@@ -163,7 +168,7 @@ def log_filename(
 ) -> None:
     global log_filename_done
 
-    if not log_filename_done:
+    if not log_filename_done and Path(fn).is_relative_to(Path.cwd()):
         logger.info(f"Run: {Path(fn).relative_to(Path.cwd())}")
         log_filename_done = True
 
